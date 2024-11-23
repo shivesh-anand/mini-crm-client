@@ -133,6 +133,10 @@ export default function CampaignHistory() {
     }
   };
 
+  if (loading) {
+    return <Spinner size="lg" />;
+  }
+
   return (
     <Card className="container mx-auto p-8 text-center bg-blue-600" shadow="lg">
       <CardHeader className="text-5xl font-bold mb-6 text-white">
