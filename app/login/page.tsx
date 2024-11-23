@@ -6,6 +6,7 @@ import { GoogleIcon } from "@/components/icons";
 
 const LoginPage = () => {
   const handleLogin = () => {
+    console.log("Backend URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
     window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`;
   };
 
