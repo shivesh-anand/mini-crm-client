@@ -2,7 +2,7 @@
 
 import { Spinner } from "@nextui-org/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Callback: React.FC = () => {
@@ -25,4 +25,10 @@ const Callback: React.FC = () => {
   return <Spinner size="lg" />;
 };
 
-export default Callback;
+export default function SuspendedCallback() {
+  return (
+    <Suspense fallback={<Spinner size="lg" />}>
+      <Callback />
+    </Suspense>
+  );
+}
