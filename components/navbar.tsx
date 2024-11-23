@@ -25,9 +25,18 @@ export const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const checkToken = () => {
+      const token = localStorage.getItem("token");
 
-    setIsLoggedIn(!!token);
+      setIsLoggedIn(!!token);
+    };
+
+    checkToken(); // Initial check
+    window.addEventListener("storage", checkToken);
+
+    return () => {
+      window.removeEventListener("storage", checkToken);
+    };
   }, []);
 
   const handleSignOut = () => {
