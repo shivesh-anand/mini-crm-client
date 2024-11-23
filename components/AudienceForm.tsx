@@ -3,11 +3,12 @@ import { Button } from "@nextui-org/button";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 import ConditionRow from "./ConditionRow";
 import { AddIcon } from "./icons";
-import { useRouter } from "next/navigation";
 
 export default function AudienceForm() {
   const [name, setName] = useState("");
@@ -39,23 +40,37 @@ export default function AudienceForm() {
   };
 
   const handleCreateSegment = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      toast.error("User is not logged in");
+      router.push("/login");
+
+      return;
+    }
+
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/audiences`,
         {
           name,
           conditions,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
       setSegmentSize(response.data.size);
-      alert(
+      toast.success(
         `Segment "${name}" created successfully! Audience Size: ${response.data.size}`
       );
       router.push("/campaigns");
     } catch (error) {
-      console.error("Error creating segment:", error);
-      alert("Failed to create audience segment");
+      console.error(error);
+      toast.error("Failed to create audience segment");
     }
   };
 

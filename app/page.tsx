@@ -1,9 +1,9 @@
+import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 
 import { GithubIcon } from "@/components/icons";
 import { subtitle } from "@/components/primitives";
 import { siteConfig } from "@/config/site";
-import { Button } from "@nextui-org/button";
 
 export default function Home() {
   return (
@@ -25,13 +25,13 @@ export default function Home() {
 
       <div className="flex gap-3">
         <Button
-          as={Link}
           isExternal
+          as={Link}
+          className="bg-blue-600 text-white"
           href={siteConfig.links.github}
-          variant="solid"
           radius="full"
           size="lg"
-          className="bg-blue-600 text-white"
+          variant="solid"
         >
           <GithubIcon size={20} />
           GitHub

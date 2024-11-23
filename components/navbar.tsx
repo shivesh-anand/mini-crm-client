@@ -1,5 +1,8 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import { Button } from "@nextui-org/button";
+import { Image } from "@nextui-org/image";
 import { Link } from "@nextui-org/link";
 import {
   NavbarBrand,
@@ -13,22 +16,24 @@ import {
 import { link as linkStyles } from "@nextui-org/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import { Image } from "@nextui-org/image";
-import { useSession, signOut } from "next-auth/react";
-import { Spinner } from "@nextui-org/spinner";
+import toast from "react-hot-toast";
 
 import { SignIn } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 
 export const Navbar = () => {
-  const { data: session, status } = useSession();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  console.log(session);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  if (status === "loading") return <Spinner />;
+    setIsLoggedIn(!!token);
+  }, []);
 
-  const handleSignOut = async () => {
-    await signOut({ redirect: false });
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    toast.success("Logged out successfully");
     window.location.href = "/";
   };
 
@@ -41,7 +46,7 @@ export const Navbar = () => {
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {session &&
+          {isLoggedIn &&
             siteConfig.navItems.map((item) => (
               <NavbarItem key={item.href}>
                 <NextLink
@@ -64,7 +69,7 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden md:flex">
-          {session ? (
+          {isLoggedIn ? (
             <Button
               className="text-sm font-normal"
               color="danger"
@@ -96,10 +101,10 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {session &&
+          {isLoggedIn &&
             siteConfig.navMenuItems.map((item, index) => (
               <NavbarMenuItem key={`${item}-${index}`}>
-                <Link color="foreground" href="#" size="lg">
+                <Link color="foreground" href={item.href} size="lg">
                   {item.label}
                 </Link>
               </NavbarMenuItem>

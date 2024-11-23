@@ -1,22 +1,18 @@
 "use client";
 import { Button } from "@nextui-org/button";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
-import { Link } from "@nextui-org/link";
-import { signIn } from "next-auth/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
 
 import { GoogleIcon } from "@/components/icons";
 
 const LoginPage = () => {
-  const handleLogIn = () => {
-    signIn("google", {
-      callbackUrl: "/audience",
-    });
+  const handleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/google`;
   };
 
   return (
     <Card className="bg-blue-600 text-white" fullWidth={true} shadow="lg">
       <CardHeader className="text-center text-5xl font-extrabold justify-center">
-        Log In
+        Sign In
       </CardHeader>
       <CardBody className="items-center justify-center">
         <form className="flex flex-col py-4 px-4 gap-4 w-full">
@@ -26,22 +22,12 @@ const LoginPage = () => {
             size="lg"
             startContent={<GoogleIcon />}
             variant="solid"
-            onPress={handleLogIn}
+            onPress={handleLogin}
           >
-            Login with Google
+            Sign In with Google
           </Button>
         </form>
       </CardBody>
-      <CardFooter className="justify-center">
-        Don&apos;t have an account yet?
-        <Link
-          showAnchorIcon
-          className="px-4 font-bold text-lg text-white"
-          href="/signup"
-        >
-          Sign Up
-        </Link>
-      </CardFooter>
     </Card>
   );
 };
