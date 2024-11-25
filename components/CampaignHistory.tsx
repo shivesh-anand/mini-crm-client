@@ -119,7 +119,7 @@ export default function CampaignHistory() {
         }
       );
 
-      //console.log(response.data);
+      //console.log(response.data)
 
       toast.success("Message sent successfully!");
       setTimeout(() => {

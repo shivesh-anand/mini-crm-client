@@ -51,7 +51,7 @@ export default function AudienceForm() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/audiences`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/audiences`,
         {
           name,
           conditions,
