@@ -2,7 +2,7 @@
 
 import { Spinner } from "@nextui-org/spinner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const Callback: React.FC = () => {
@@ -13,17 +13,11 @@ const Callback: React.FC = () => {
     const token = searchParams.get("token");
 
     if (token) {
-      try {
-        localStorage.setItem("token", token);
-        toast.success("Logged in successfully", { id: "logged-in" });
-        router.push("/audience");
-      } catch (error) {
-        console.error("Token storage error:", error);
-        toast.error("Failed to store token. Please try again.");
-        router.push("/login");
-      }
+      localStorage.setItem("token", token);
+      toast.success("Logged in successfully", { id: "logged in" });
+      router.push("/audience");
     } else {
-      toast.error("Some error occurred. Please try again.");
+      toast.error("Some Error Occurred, Please try again");
       router.push("/login");
     }
   }, [router, searchParams]);
@@ -31,4 +25,10 @@ const Callback: React.FC = () => {
   return <Spinner size="lg" />;
 };
 
-export default Callback;
+export default function SuspendedCallback() {
+  return (
+    <Suspense fallback={<Spinner size="lg" />}>
+      <Callback />
+    </Suspense>
+  );
+}
